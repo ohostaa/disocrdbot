@@ -16,6 +16,26 @@ client.login(process.env.CLIENT_TOKEN);
 //
 const CHANNEL_ID = "1480053591611019264";
 
+const port = process.env.PORT || 3000;
+
+const wss = new WebSocketServer({
+    port
+});
+
+wss.on("connection", (socket) => {
+    console.log("BDS connected");
+
+    socket.on("message", (data) => {
+        console.log("Minecraft → Discord:", data.toString());
+    });
+
+    socket.on("close", () => {
+        console.log("BDS disconnected");
+    });
+});
+
+
+
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -48,22 +68,4 @@ client.on("messageCreate", async (message) => {
   }
 
   message.react("✅");
-});
-
-const port = process.env.PORT || 3000;
-
-const wss = new WebSocketServer({
-    port
-});
-
-wss.on("connection", (socket) => {
-    console.log("BDS connected");
-
-    socket.on("message", (data) => {
-        console.log("Minecraft → Discord:", data.toString());
-    });
-
-    socket.on("close", () => {
-        console.log("BDS disconnected");
-    });
 });
