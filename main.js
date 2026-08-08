@@ -1,5 +1,5 @@
 const { Client } = require("discord.js");
-const axios = require('axios');
+const ws = require('ws');
 
 const client = new Client({
   intents: [
