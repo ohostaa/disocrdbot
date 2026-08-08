@@ -1,5 +1,4 @@
 const { Client } = require("discord.js");
-const { AntiCrash } = require('discord-tool');
 const axios = require('axios');
 
 const client = new Client({
@@ -11,8 +10,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ]
 });
-
-new AntiCrash(client);
 
 client.login(process.env.CLIENT_TOKEN);
 
