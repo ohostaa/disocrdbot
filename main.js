@@ -1,6 +1,6 @@
 const { Client } = require("discord.js");
 const { AntiCrash } = require('discord-tool');
-const axios = require('ws');
+const axios = require('axios');
 
 const client = new Client({
   intents: [
@@ -38,5 +38,35 @@ client.on("messageCreate", async (message) => {
     return;
   }
 
-  
+  const data = JSON.stringify({
+    type: "message",
+    author: message.author.username,
+    content: message.content
+  });
+
+  for (const socket of wss.clients) {
+    if (socket.readyState === 1) {
+        socket.send(data);
+    }
+  }
+
+  message.react("✅");
+});
+
+const port = process.env.PORT || 3000;
+
+const wss = new WebSocketServer({
+    port
+});
+
+wss.on("connection", (socket) => {
+    console.log("BDS connected");
+
+    socket.on("message", (data) => {
+        console.log("Minecraft → Discord:", data.toString());
+    });
+
+    socket.on("close", () => {
+        console.log("BDS disconnected");
+    });
 });
