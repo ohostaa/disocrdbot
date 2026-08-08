@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits  } = require("discord.js");
-const ws = require('ws');
+const { WebSocketServer } = require('ws');
 
 const client = new Client({
   intents: [
